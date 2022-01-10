@@ -9,6 +9,8 @@ import requests
 import threading
 import json
 
+from api_pusher import send_message
+
 ApiUrls = {
     'getProductInfos':
         'https://api.m.jd.com/api?functionId=pcCart_jc_getCurrentCart&appid=JDC_mall_cart&loginType=3&body={"serInfo":{"area":"13_1000_40488_54435","user-key":"78f2fbb3-610e-4057-bee3-eafe10da0f8f"},"cartExt":{"specialId":1}}',
@@ -29,26 +31,26 @@ cookies = {
     'whwswswws': '',
     'TARGET_UNIT': 'bjcenter',
     'ipLocation': '%u5c71%u4e1c',
-    '__jdv': '122270672|kong|t_1001491481_|jingfen|fbb0c177150c42c9ae001015dc606693|1640523210435',
-    'areaId': '13',
-    'ipLoc-djd': '13-1000-40488-54435.3244903835',
     'PCSYCityID': 'CN_370000_370100_0',
     'unpl': 'JF8EAKZnNSttDUNRBhwFGhNCH1gEW10JTUQKaGANUwlcG1cNS1cbERZ7XlVdXhRKFx9ubhRUVVNOVg4eACsSEXtdVV9cCUkfBmZlNQkENh5VAEBYWyJLHm1XXm0ISicDam8NVVtfSVcEEgsbEhBDWlFZVAlLFTNfZw1QbWh7UgEeARsXEUNdZF9tCXtcbW4qBVFVUEpSAhkBGhsZS11UVloNTB4Cb2U1VW1b',
-    'TrackID': '1sZ-vQvPSjcizbcmvaWSWNXw2FXaU6heqSjUVaDdOCpzXrfA94brmEPB-4IdKZWaWCdTJW8PcUp-FYUtjmOAZc1__z-Q-MhEqCVARbEHKozRAPCMry0YIYkAtGHqMlfxX',
     'pinId': '1DFZEXqqCEKuTTSad7TecA',
     'pin': 'jd_sJovPmbhzNqJ',
     'unick': 'jd_sJovPmbhzNqJ',
     'ceshi3.com': '000',
     '_tp': '40NjtDUMie4wthDN5S8bNg%3D%3D',
     '_pst': 'jd_sJovPmbhzNqJ',
-    'shshshfp': '9062cc8a042ba9101c5c96af6c099085',
+    'areaId': '26',
+    'ipLoc-djd': '26-3970-3978-12253',
+    '__jdv': '76161171|direct|-|none|-|1641819525010',
+    '__jda': '122270672.14990763208811196468013.1499076321.1641812883.1641819525.414',
     '__jdc': '122270672',
-    'ip_cityCode': '1000',
+    'wlfstk_smdl': 'b7576qtwl4jgrud2ca7a30jq81p1ufk5',
+    'TrackID': '10TVO4Wf9dSeGDYvVRlx8gS0L4LZleGimD0i-Dq8LAYORMWG5Lb7RxuiKqy2bW3uxzPMCjYEURbx6WpH_JafgWaxLApZnMoXH2EA6uDmRqfgQl1XIvERh3oT9uTc-WfeW',
+    'thor': 'CFBCF332498D096CCB7570306153F76A936F3D67B40701C976DACC6D49E33E49CD9EAC4BBE4ABB513A7B012D087F166CFF195EF51DD12D6C9BC3576ED222CCFD24BF2CE3FE753FB48A1E51E4EE2ADAC25D45988C143567C0C6B22734FC525C03D617550BE13D7D6787374D81BD09C75640D1AAB62B4D3C9D1103F391DB8217F71A44F8B53D9C025AC4A3294476A10A4C7035E6ED752D82D268165B090E035B8F',
+    'shshshfp': '9062cc8a042ba9101c5c96af6c099085',
     '3AB9D23F7A4B3C9B': 'AYGPYJLVRTLAQIUTZ7I4JLRTE42V4DIV7BW6KSA5GYZCY3CL2ISYTJS3GHMR7VJZYMISFYV7NXSBSAIK3EN4CZR66Y',
-    'thor': 'CFBCF332498D096CCB7570306153F76A936F3D67B40701C976DACC6D49E33E495C97B235A72EFEDC077547F5FD85C9085C9A5AFA89C33737CF61F340863619A8562302C56B6D12B0FBE7B92008F45D45D20AAD16E7180D356F869F5C2F504550A100563C15798D65FD9F98B51318F9C7F7DBF5432624DE8E84CF6903BDABCE306A05D54C48168C29C05030E0A0341C9C76A2C04BEFD2BF792994EF5C279FADEC',
-    '__jda': '122270672.14990763208811196468013.1499076321.1641719567.1641725233.410',
-    '__jdb': '122270672.1.14990763208811196468013|410.1641725233',
-    'shshshsID': '475609317ccd8deb5c3b20cdd3284f2b_1_1641725233817',
+    '__jdb': '122270672.5.14990763208811196468013|414.1641819525',
+    'shshshsID': 'fc2750a3d5b55d3ea80de7980a551921_3_1641819598729',
     'cn': '0',
     'user-key': '78f2fbb3-610e-4057-bee3-eafe10da0f8f',
 }
@@ -76,7 +78,7 @@ def make_app():
 
     Label(app, text='输入抢单时间').place(relx=0.1, rely=0.3)
     timeStr = StringVar()
-    timeStr.set(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    timeStr.set(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
     Entry(app, textvariable=timeStr, name='ipt').place(relx=0.1,
                                                        rely=0.35,
                                                        relwidth=0.3,
@@ -85,7 +87,7 @@ def make_app():
     Label(app, text='商品ID').place(relx=0.45, rely=0.3)
     pId = StringVar()
     # pId.set('2148924,10026899941091,100013490678')  #
-    pId.set('10034111998541')  # sku
+    pId.set('100031764590')  # sku
     Entry(app, textvariable=pId, name='ipt1').place(relx=0.45,
                                                     rely=0.35,
                                                     relwidth=0.2,
@@ -225,24 +227,24 @@ def checkCartAndSubmit():
 
         currentTime = datetime.datetime.now()
 
-        if currentTime.strftime('%Y-%m-%d %H:%M:%S') >= setTime:
+        if currentTime.strftime('%Y-%m-%d %H:%M:%S.%f') >= setTime:
 
-            for i in range(100):
+            for i in range(10):
                 submitResult = reSubmitOrder(checkCartHeaders, tradeHeaders, vendorRemarks, runningText)
                 if submitResult:
                     break
                 runningText.insert(0.0, '\n第' + str(i) + '次抢单结束----' + datetime.datetime.now().strftime(
                     '%Y-%m-%d %H:%M:%S.%f'))
-                time.sleep(1)
+                time.sleep(0.5)
 
             break
 
-        runningText.insert(
-            0.0, '\n倒计时：' + str(
-                (datetime.datetime.strptime(setTime, "%Y-%m-%d %H:%M:%S") -
-                 currentTime).seconds) + '秒------' +
-                 currentTime.strftime('%Y-%m-%d %H:%M:%S'))
-        time.sleep(timeCut)
+        leftSec = (datetime.datetime.strptime(setTime, "%Y-%m-%d %H:%M:%S.%f") - currentTime).seconds
+        runningText.insert(0.0, '\n倒计时：' + str(leftSec) + '秒------' + currentTime.strftime('%Y-%m-%d %H:%M:%S.%f'))
+        if leftSec <= 1:
+            time.sleep(0.1)
+        else:
+            time.sleep(timeCut)
 
 
 def reSubmitOrder(checkCartHeaders, tradeHeaders, vendorRemarks, runningText):
@@ -256,10 +258,13 @@ def reSubmitOrder(checkCartHeaders, tradeHeaders, vendorRemarks, runningText):
 
 
 def _doSubmitOrder(checkCartHeaders, tradeHeaders, vendorRemarks, runningText):
+
     # 全选购物车
     checkAllOfCartUrl = ApiUrls['checkAllOfCart']
     checkAllofCartRes = requests.get(checkAllOfCartUrl, headers=checkCartHeaders, verify=False)
     runningText.insert(0.0, '\n全选时间：' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
+    if checkAllofCartRes.json().get('resultData').get('cartInfo').get('checkedWareNum', 0) <= 0:
+        return False
     # 确认订单
     getOrderInfoUrl = ApiUrls['getOrderInfo']
     getOrderInfoRes = requests.get(getOrderInfoUrl, headers=tradeHeaders, allow_redirects=False, verify=False)
@@ -272,6 +277,7 @@ def _doSubmitOrder(checkCartHeaders, tradeHeaders, vendorRemarks, runningText):
         message = ''
         if submitOrderRes.json()['orderId'] != 0:
             message = '抢单成功'
+            send_message(message)
             runningText.insert(0.0, '\n下单结果：' + message)
             return True
         else:
