@@ -31,7 +31,6 @@ cookies = {
     'whwswswws': '',
     'TARGET_UNIT': 'bjcenter',
     'ipLocation': '%u5c71%u4e1c',
-    'PCSYCityID': 'CN_370000_370100_0',
     'unpl': 'JF8EAKZnNSttDUNRBhwFGhNCH1gEW10JTUQKaGANUwlcG1cNS1cbERZ7XlVdXhRKFx9ubhRUVVNOVg4eACsSEXtdVV9cCUkfBmZlNQkENh5VAEBYWyJLHm1XXm0ISicDam8NVVtfSVcEEgsbEhBDWlFZVAlLFTNfZw1QbWh7UgEeARsXEUNdZF9tCXtcbW4qBVFVUEpSAhkBGhsZS11UVloNTB4Cb2U1VW1b',
     'pinId': '1DFZEXqqCEKuTTSad7TecA',
     'pin': 'jd_sJovPmbhzNqJ',
@@ -39,18 +38,18 @@ cookies = {
     'ceshi3.com': '000',
     '_tp': '40NjtDUMie4wthDN5S8bNg%3D%3D',
     '_pst': 'jd_sJovPmbhzNqJ',
-    'areaId': '26',
-    'ipLoc-djd': '26-3970-3978-12253',
     '__jdv': '76161171|direct|-|none|-|1641819525010',
-    '__jda': '122270672.14990763208811196468013.1499076321.1641812883.1641819525.414',
     '__jdc': '122270672',
-    'wlfstk_smdl': 'b7576qtwl4jgrud2ca7a30jq81p1ufk5',
-    'TrackID': '10TVO4Wf9dSeGDYvVRlx8gS0L4LZleGimD0i-Dq8LAYORMWG5Lb7RxuiKqy2bW3uxzPMCjYEURbx6WpH_JafgWaxLApZnMoXH2EA6uDmRqfgQl1XIvERh3oT9uTc-WfeW',
-    'thor': 'CFBCF332498D096CCB7570306153F76A936F3D67B40701C976DACC6D49E33E49CD9EAC4BBE4ABB513A7B012D087F166CFF195EF51DD12D6C9BC3576ED222CCFD24BF2CE3FE753FB48A1E51E4EE2ADAC25D45988C143567C0C6B22734FC525C03D617550BE13D7D6787374D81BD09C75640D1AAB62B4D3C9D1103F391DB8217F71A44F8B53D9C025AC4A3294476A10A4C7035E6ED752D82D268165B090E035B8F',
     'shshshfp': '9062cc8a042ba9101c5c96af6c099085',
+    '__jda': '122270672.14990763208811196468013.1499076321.1641819525.1641905168.415',
+    'areaId': '13',
+    'ipLoc-djd': '13-2900-2908-0',
+    'wlfstk_smdl': 'xqlwg5tml9izwzlu2wkmrj9dki2n96t7',
     '3AB9D23F7A4B3C9B': 'AYGPYJLVRTLAQIUTZ7I4JLRTE42V4DIV7BW6KSA5GYZCY3CL2ISYTJS3GHMR7VJZYMISFYV7NXSBSAIK3EN4CZR66Y',
-    '__jdb': '122270672.5.14990763208811196468013|414.1641819525',
-    'shshshsID': 'fc2750a3d5b55d3ea80de7980a551921_3_1641819598729',
+    'TrackID': '15M-alDfVX4d1rn7QyBJYNM4bYKtMxK6yU76w8fODV3ASCowKnA35atGHSIcmK859EIpGPi9MwaVro0jKZ03eNoT8qGWxeAWQ9vE4XMN3F5ZT5JUechWZlgoU7gDvY75W',
+    'thor': 'CFBCF332498D096CCB7570306153F76A936F3D67B40701C976DACC6D49E33E49B685999085FB7971BA29ACE40007BE4839AE7CF875532A5CEE970271AFF8766073645EC935C4E1BB7EAA6182CE28AFAAF71596606BB3973D028792BBC47509225DC388C2E98115AB6AE2DA534A79159D78C295F5323F4DF8A1B12F997CD42BB8D32E939C9AF0C97F45860DC04DB4E518EDE30D0873BB5AE085A352C6C9036BA5',
+    '__jdb': '122270672.6.14990763208811196468013|415.1641905168',
+    'shshshsID': 'f0d06f4536f2d799cbff5ae3205ed0b4_3_1641906109614',
     'cn': '0',
     'user-key': '78f2fbb3-610e-4057-bee3-eafe10da0f8f',
 }
@@ -65,7 +64,7 @@ def getStrFromCookie(cookies):
 
 def make_app():
     app = Tk()
-    app.geometry('800x550')
+    app.geometry('600x450')
     app.title('京东加车抢')
     Label(app, text='cookie').place(relx=0.1, rely=0.05)
     cookieStr = StringVar()
@@ -87,7 +86,7 @@ def make_app():
     Label(app, text='商品ID').place(relx=0.45, rely=0.3)
     pId = StringVar()
     # pId.set('2148924,10026899941091,100013490678')  #
-    pId.set('100031764590')  # sku
+    pId.set('100009292175')  # sku
     Entry(app, textvariable=pId, name='ipt1').place(relx=0.45,
                                                     rely=0.35,
                                                     relwidth=0.2,
@@ -101,7 +100,7 @@ def make_app():
                                                       relwidth=0.2,
                                                       relheight=0.1)
 
-    Button(app, text='点击开始抢单', fg="black", bg="blue",
+    Button(app, text='点击开始抢单', fg="black", bg="white",
            command=orderThread).place(relx=0.1,
                                       rely=0.5,
                                       relwidth=0.8,
@@ -229,7 +228,7 @@ def checkCartAndSubmit():
 
         if currentTime.strftime('%Y-%m-%d %H:%M:%S.%f') >= setTime:
 
-            for i in range(10):
+            for i in range(5):
                 submitResult = reSubmitOrder(checkCartHeaders, tradeHeaders, vendorRemarks, runningText)
                 if submitResult:
                     break
@@ -242,7 +241,7 @@ def checkCartAndSubmit():
         leftSec = (datetime.datetime.strptime(setTime, "%Y-%m-%d %H:%M:%S.%f") - currentTime).seconds
         runningText.insert(0.0, '\n倒计时：' + str(leftSec) + '秒------' + currentTime.strftime('%Y-%m-%d %H:%M:%S.%f'))
         if leftSec <= 1:
-            time.sleep(0.1)
+            time.sleep(0.05)
         else:
             time.sleep(timeCut)
 
