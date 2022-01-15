@@ -1,15 +1,14 @@
 # 京东购物车下单
 # 程序流程：全选购物车->确认订单->下单
 # -*- coding=UTF-8 -*-
-import time
 import datetime
-from tkinter import *
-import tkinter.messagebox
-import requests
-import threading
 import json
+import threading
+import time
+import tkinter.messagebox
+from tkinter import *
 
-from api_pusher import send_message
+import requests
 
 ApiUrls = {
     'getProductInfos':
@@ -39,17 +38,17 @@ cookies = {
     '_tp': '40NjtDUMie4wthDN5S8bNg%3D%3D',
     '_pst': 'jd_sJovPmbhzNqJ',
     '__jdv': '76161171|direct|-|none|-|1641819525010',
-    '__jdc': '122270672',
-    'shshshfp': '9062cc8a042ba9101c5c96af6c099085',
-    '__jda': '122270672.14990763208811196468013.1499076321.1641819525.1641905168.415',
     'areaId': '13',
     'ipLoc-djd': '13-2900-2908-0',
-    'wlfstk_smdl': 'xqlwg5tml9izwzlu2wkmrj9dki2n96t7',
+    '__jdc': '122270672',
+    'wlfstk_smdl': '34pcp29gasywa4lrqc4ayj1yzbv4vo3z',
+    'TrackID': '1NjJ4WcCUrxLirF1mPiMYyEVZjHiABe532lTjbn2TLxdpCOgAbrNm1PoNr0x3v1Zp81FjDrU6YlM0XVki340gvceVOUet7-9tTyD0oE4gM82JAoJT12JFmOHqQzbiM2OP',
+    'shshshfp': 'f7ce069b6da41cf4cc77ef6104dd13f8',
     '3AB9D23F7A4B3C9B': 'AYGPYJLVRTLAQIUTZ7I4JLRTE42V4DIV7BW6KSA5GYZCY3CL2ISYTJS3GHMR7VJZYMISFYV7NXSBSAIK3EN4CZR66Y',
-    'TrackID': '15M-alDfVX4d1rn7QyBJYNM4bYKtMxK6yU76w8fODV3ASCowKnA35atGHSIcmK859EIpGPi9MwaVro0jKZ03eNoT8qGWxeAWQ9vE4XMN3F5ZT5JUechWZlgoU7gDvY75W',
-    'thor': 'CFBCF332498D096CCB7570306153F76A936F3D67B40701C976DACC6D49E33E49B685999085FB7971BA29ACE40007BE4839AE7CF875532A5CEE970271AFF8766073645EC935C4E1BB7EAA6182CE28AFAAF71596606BB3973D028792BBC47509225DC388C2E98115AB6AE2DA534A79159D78C295F5323F4DF8A1B12F997CD42BB8D32E939C9AF0C97F45860DC04DB4E518EDE30D0873BB5AE085A352C6C9036BA5',
-    '__jdb': '122270672.6.14990763208811196468013|415.1641905168',
-    'shshshsID': 'f0d06f4536f2d799cbff5ae3205ed0b4_3_1641906109614',
+    'thor': 'CFBCF332498D096CCB7570306153F76A936F3D67B40701C976DACC6D49E33E499297D8CA75C5602E01DE77777AFD73B979798879EDA91366D4CF2A258BC08AE6EA69F9E8C57ECFCB1B00CB0F118EB53F5872E7BE47C2FBC15FCA3F24988E1695C865A3C022C1F513E7F6C9BD879653A0EAA94B6D6B8091064FCFF9CCD2587496FA601F389CEAEE634BFC5EE7EAC599791A3C2927484B65DB170244DB1FD52B1A',
+    '__jda': '122270672.14990763208811196468013.1499076321.1642242982.1642246687.420',
+    '__jdb': '122270672.1.14990763208811196468013|420.1642246687',
+    'shshshsID': '9f43f829f9f9c6d95b2d7dd89e22f48f_1_1642246687210',
     'cn': '0',
     'user-key': '78f2fbb3-610e-4057-bee3-eafe10da0f8f',
 }
@@ -86,7 +85,7 @@ def make_app():
     Label(app, text='商品ID').place(relx=0.45, rely=0.3)
     pId = StringVar()
     # pId.set('2148924,10026899941091,100013490678')  #
-    pId.set('100009292175')  # sku
+    pId.set('100019743172')  # sku
     Entry(app, textvariable=pId, name='ipt1').place(relx=0.45,
                                                     rely=0.35,
                                                     relwidth=0.2,
@@ -128,6 +127,7 @@ def orderThread():
 
 def checkCartAndSubmit():
     cookie = app.children['cookie'].get()
+    s = requests.Session()
     if cookie == '':
         tkinter.messagebox.showinfo(
             '错误',
@@ -184,10 +184,10 @@ def checkCartAndSubmit():
     pIds = app.children['ipt1'].get()
     # count = app.children['ipt2'].get()
     # 查询商品信息
-    pInfoRes = requests.get(ApiUrls['getProductInfos'],
-                            headers=cartInfoheaders, verify=False).json()
+    pInfoRes = s.get(ApiUrls['getProductInfos'],
+                     headers=cartInfoheaders, verify=False).json()
     vendors = []
-    if (pInfoRes['success'] and pInfoRes['resultData']['cartInfo'] is not None):
+    if pInfoRes['success'] and pInfoRes['resultData']['cartInfo'] is not None:
         vendors = pInfoRes['resultData']['cartInfo']['vendors']
     else:
         tkinter.messagebox.showinfo('提示', '请把商品pIds加入购物车')
@@ -228,13 +228,13 @@ def checkCartAndSubmit():
 
         if currentTime.strftime('%Y-%m-%d %H:%M:%S.%f') >= setTime:
 
-            for i in range(5):
-                submitResult = reSubmitOrder(checkCartHeaders, tradeHeaders, vendorRemarks, runningText)
+            for i in range(3):
+                submitResult = reSubmitOrder(s, checkCartHeaders, tradeHeaders, vendorRemarks, runningText)
                 if submitResult:
                     break
                 runningText.insert(0.0, '\n第' + str(i) + '次抢单结束----' + datetime.datetime.now().strftime(
                     '%Y-%m-%d %H:%M:%S.%f'))
-                time.sleep(0.5)
+                time.sleep(0.1)
 
             break
 
@@ -246,9 +246,9 @@ def checkCartAndSubmit():
             time.sleep(timeCut)
 
 
-def reSubmitOrder(checkCartHeaders, tradeHeaders, vendorRemarks, runningText):
+def reSubmitOrder(s, checkCartHeaders, tradeHeaders, vendorRemarks, runningText):
     try:
-        return _doSubmitOrder(checkCartHeaders, tradeHeaders, vendorRemarks, runningText)
+        return _doSubmitOrder(s, checkCartHeaders, tradeHeaders, vendorRemarks, runningText)
     except Exception as e:
         runningText.insert(0.0, '\n程序异常：' + repr(e))
 
@@ -256,33 +256,37 @@ def reSubmitOrder(checkCartHeaders, tradeHeaders, vendorRemarks, runningText):
     return False
 
 
-def _doSubmitOrder(checkCartHeaders, tradeHeaders, vendorRemarks, runningText):
+def _doSubmitOrder(s, checkCartHeaders, tradeHeaders, vendorRemarks, runningText):
+    start_time = int(datetime.datetime.now().timestamp() * 1000)
 
     # 全选购物车
     checkAllOfCartUrl = ApiUrls['checkAllOfCart']
-    checkAllofCartRes = requests.get(checkAllOfCartUrl, headers=checkCartHeaders, verify=False)
-    runningText.insert(0.0, '\n全选时间：' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
+    checkAllofCartRes = s.get(checkAllOfCartUrl, headers=checkCartHeaders, verify=False)
     if checkAllofCartRes.json().get('resultData').get('cartInfo').get('checkedWareNum', 0) <= 0:
         return False
+
     # 确认订单
     getOrderInfoUrl = ApiUrls['getOrderInfo']
-    getOrderInfoRes = requests.get(getOrderInfoUrl, headers=tradeHeaders, allow_redirects=False, verify=False)
-    runningText.insert(0.0, '\n确认订单时间：' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
+    getOrderInfoRes = s.get(getOrderInfoUrl, headers=tradeHeaders, allow_redirects=False, verify=False)
+    # runningText.insert(0.0, '\n确认订单时间：' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
+
     # 下单
     if getOrderInfoRes.status_code == 200:
         submitOrderUrl = ApiUrls['submitOrder'].format(vendorRemarks=json.dumps(vendorRemarks, separators=(',', ':')))
-        submitOrderRes = requests.get(submitOrderUrl, headers=tradeHeaders, allow_redirects=False, verify=False)
+        submitOrderRes = s.get(submitOrderUrl, headers=tradeHeaders, allow_redirects=False, verify=False)
         runningText.insert(0.0, '\n下单完成时间：' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
         message = ''
         if submitOrderRes.json()['orderId'] != 0:
             message = '抢单成功'
-            send_message(message)
             runningText.insert(0.0, '\n下单结果：' + message)
             return True
         else:
             message = submitOrderRes.json()['message']
             runningText.insert(0.0, '\n下单接口message：' + message)
 
+    end_time = int(datetime.datetime.now().timestamp() * 1000)
+
+    print('diff=' + str(end_time - start_time))
     # 默认false
     return False
 
