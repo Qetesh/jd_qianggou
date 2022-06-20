@@ -13,4 +13,4 @@
  
 **效果预览**
 
-![](https://github.com/geeeeeeeek/jd_qianggou/blob/master/img/demo01.png)
+![](https://gitee.com/geeeeeeeek/jd_qianggou/blob/master/img/demo01.png)
