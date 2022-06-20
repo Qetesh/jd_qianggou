@@ -22,3 +22,7 @@ https://item.jd.com/xxxxxxxx.html，
 **效果预览**
 
 ![](https://github.com/geeeeeeeek/jd_qianggou/blob/master/img/demo01.png)
+
+**问题咨询**
+
+微信：lengqin1024
