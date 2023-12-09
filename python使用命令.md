@@ -19,4 +19,5 @@ pip install -r requirements.txt
 
 -i 表示可执行文件的图标。
 
+
 pyinstaller -F -w xx.py
